@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vaishnavi Kharya – Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Oswald:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',sans-serif;background:#050505;color:#fff;overflow-x:hidden}
+    .font-display{font-family:'Oswald',sans-serif}
+    .font-mono{font-family:'JetBrains Mono',monospace}
+
+    ::-webkit-scrollbar{width:5px}
+    ::-webkit-scrollbar-track{background:#0a0a0a}
+    ::-webkit-scrollbar-thumb{background:#E30613;border-radius:3px}
+
+    .glass{background:rgba(26,26,26,0.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,0.04)}
+
+    body::before{content:'';position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:0.025;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    #loader{position:fixed;inset:0;z-index:10000;background:#050505;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity .6s,visibility .6s}
+    #loader.hidden{opacity:0;visibility:hidden}
+    .loader-ring{width:48px;height:48px;border:2px solid rgba(255,255,255,0.05);border-top-color:#E30613;border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    #scroll-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#E30613,#f87171);z-index:9998;width:0;transition:width .1s linear}
+
+    .grad-text{background:linear-gradient(135deg,#E30613 0%,#ff6b6b 50%,#E30613 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 3s linear infinite}
+    @keyframes shimmer{to{background-position:200% center}}
+
+    .card{background:rgba(22,22,22,0.7);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.04);border-radius:16px;transition:all .45s cubic-bezier(.22,1,.36,1);position:relative}
+    .card::before{content:'';position:absolute;inset:0;border-radius:16px;padding:1px;background:linear-gradient(135deg,transparent 40%,rgba(227,6,19,0.15) 50%,transparent 60%);background-size:300% 300%;opacity:0;transition:opacity .45s;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+    .card:hover{transform:translateY(-6px);border-color:rgba(227,6,19,0.15);box-shadow:0 20px 60px -15px rgba(227,6,19,0.08)}
+    .card:hover::before{opacity:1;animation:borderGlow 2s linear infinite}
+    @keyframes borderGlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+    .card-no-overflow{overflow:visible !important}
+
+    .fu{opacity:0;transform:translateY(50px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1)}
+    .fu.vis{opacity:1;transform:translateY(0)}
+    .fu-d1{transition-delay:.1s}.fu-d2{transition-delay:.2s}.fu-d3{transition-delay:.3s}.fu-d4{transition-delay:.4s}.fu-d5{transition-delay:.5s}
+
+    @keyframes heroGlow{0%,100%{opacity:.05;transform:translate(-50%,-50%) scale(1)}50%{opacity:.1;transform:translate(-50%,-50%) scale(1.15)}}
+    .hero-glow{animation:heroGlow 6s ease-in-out infinite}
+
+    @keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
+    .float{animation:floatY var(--d,5s) ease-in-out infinite;animation-delay:var(--dl,0s)}
+
+    .skill-ring{transform:rotate(-90deg)}
+    .skill-ring circle.progress{stroke-dasharray:251;stroke-dashoffset:251;transition:stroke-dashoffset 1.5s cubic-bezier(.22,1,.36,1)}
+
+    @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .marquee{animation:marquee 35s linear infinite}
+    .marquee:hover{animation-play-state:paused}
+
+    @keyframes accOpen{0%{opacity:0;max-height:0}100%{opacity:1;max-height:400px}}
+    .acc-body{animation:accOpen .4s ease-out forwards;overflow:hidden}
+
+    .nl{position:relative;padding:4px 0}
+    .nl::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;background:#E30613;transition:all .3s;transform:translateX(-50%);border-radius:1px}
+    .nl:hover::after,.nl.act::after{width:100%}
+
+    @keyframes tIn{0%{opacity:0;transform:translateY(20px) scale(.95)}100%{opacity:1;transform:translateY(0) scale(1)}}
+    @keyframes tOut{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(20px) scale(.95)}}
+    .t-in{animation:tIn .35s ease-out forwards}
+    .t-out{animation:tOut .3s ease-in forwards}
+
+    @keyframes mIn{0%{opacity:0;transform:scale(.92) translateY(20px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+    .m-in{animation:mIn .4s cubic-bezier(.22,1,.36,1) forwards}
+
+    .proj-img{position:relative;overflow:hidden}
+    .proj-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,5,0.9) 0%,transparent 60%);pointer-events:none;z-index:1}
+    .proj-img img{transition:transform .7s cubic-bezier(.22,1,.36,1),filter .7s}
+    .card:hover .proj-img img{transform:scale(1.08);filter:brightness(1.1)}
+
+    .code-block{background:#0d0d0d;border:1px solid rgba(255,255,255,0.04);border-radius:12px;overflow:hidden}
+    .code-dots{display:flex;gap:6px;padding:12px 16px;background:rgba(255,255,255,0.02)}
+    .code-dot{width:10px;height:10px;border-radius:50%}
+
+    .glow-dot{width:8px;height:8px;border-radius:50%;background:#E30613;box-shadow:0 0 12px #E30613,0 0 24px rgba(227,6,19,0.3)}
+
+    .divider{height:1px;background:linear-gradient(90deg,transparent,rgba(227,6,19,0.2),transparent)}
+
+    /* Form inputs fix */
+    .form-input{width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px 16px;font-size:14px;color:#fff;transition:all .3s;outline:none;font-family:'Inter',sans-serif}
+    .form-input::placeholder{color:#374151}
+    .form-input:focus{border-color:rgba(227,6,19,0.35);background:rgba(255,255,255,0.04);box-shadow:0 0 0 3px rgba(227,6,19,0.06)}
+    .form-input:hover:not(:focus){border-color:rgba(255,255,255,0.1)}
+
+    /* Submit button */
+    .submit-btn{position:relative;background:#E30613;color:#fff;font-size:12px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;padding:16px 32px;border-radius:12px;border:none;cursor:pointer;transition:all .3s;width:100%;display:flex;align-items:center;justify-content:center;gap:10px;font-family:'Inter',sans-serif;overflow:hidden}
+    .submit-btn:hover{background:#b91c1c;box-shadow:0 8px 30px -8px rgba(227,6,19,0.3)}
+    .submit-btn:active{transform:scale(0.98)}
+    .submit-btn:disabled{opacity:0.7;cursor:not-allowed}
+    .submit-btn .btn-glow{position:absolute;inset:-2px;background:#E30613;border-radius:14px;opacity:0;filter:blur(12px);transition:opacity .3s;pointer-events:none}
+    .submit-btn:hover .btn-glow{opacity:0.2}
+
+    /* Toast styling fix */
+    #toasts{position:fixed;bottom:24px;right:24px;z-index:950;display:flex;flex-direction:column;gap:12px;pointer-events:none}
+    .toast-item{pointer-events:auto;min-width:300px;max-width:400px}
+
+    /* Button ripple */
+    @keyframes ripple{to{transform:scale(4);opacity:0}}
+  </style>
+</head>
+<body>
+
+<div id="loader">
+  <div class="loader-ring"></div>
+  <p class="font-mono text-xs text-gray-500 mt-4 tracking-wider">LOADING PORTFOLIO...</p>
+</div>
+
+<div id="scroll-progress"></div>
+
+<div id="toasts"></div>
+
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 z-[900] hidden items-center justify-center p-4" style="background:rgba(0,0,0,.85);backdrop-filter:blur(10px)">
+  <div class="card card-no-overflow max-w-lg w-full p-8 m-in relative" style="border-color:rgba(227,6,19,0.15)">
+    <button onclick="closeModal()" class="absolute top-4 right-4 w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all z-10">
+      <iconify-icon icon="lucide:x" width="18"></iconify-icon>
+    </button>
+    <div class="w-12 h-12 rounded-xl bg-[#E30613]/10 flex items-center justify-center mb-5">
+      <iconify-icon icon="lucide:code-2" width="24" class="text-[#E30613]"></iconify-icon>
+    </div>
+    <h3 id="m-title" class="font-display text-2xl font-medium tracking-tight mb-3"></h3>
+    <p id="m-desc" class="text-gray-400 font-light leading-relaxed mb-5 text-[15px]"></p>
+    <div id="m-tags" class="flex flex-wrap gap-2 mb-5"></div>
+    <div id="m-bullets" class="space-y-2.5 mb-6"></div>
+    <a id="m-link" href="https://github.com/vaishnavikharya7-alt" target="_blank" class="inline-flex items-center gap-2 bg-[#E30613] hover:bg-[#b91c1c] text-white text-xs font-semibold tracking-widest uppercase px-6 py-3 rounded-lg transition-colors">
+      <iconify-icon icon="mdi:github" width="16"></iconify-icon> View on GitHub
+    </a>
+  </div>
+</div>
+
+<!-- NAVBAR -->
+<nav id="nav" class="fixed top-0 left-0 right-0 z-[800] transition-all duration-500">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="#hero" class="font-display text-xl font-semibold tracking-wider grad-text">VK</a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#about" class="nl text-[13px] font-medium tracking-wider uppercase text-gray-400 hover:text-white transition-colors">About</a>
+        <a href="#skills" class="nl text-[13px] font-medium tracking-wider uppercase text-gray-400 hover:text-white transition-colors">Skills</a>
+        <a href="#projects" class="nl text-[13px] font-medium tracking-wider uppercase text-gray-400 hover:text-white transition-colors">Projects</a>
+        <a href="#certs" class="nl text-[13px] font-medium tracking-wider uppercase text-gray-400 hover:text-white transition-colors">Certs</a>
+        <a href="#contact" class="relative group">
+          <div class="absolute -inset-1 bg-[#E30613] rounded-lg opacity-0 group-hover:opacity-20 blur transition-opacity duration-300"></div>
+          <span class="relative bg-[#E30613] hover:bg-[#b91c1c] text-white text-[12px] font-semibold tracking-[.15em] uppercase px-5 py-2.5 rounded-lg transition-colors block">Contact</span>
+        </a>
+      </div>
+      <button id="mob-btn" class="md:hidden w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center" onclick="toggleMob()">
+        <iconify-icon icon="lucide:menu" width="22" id="mob-icon"></iconify-icon>
+      </button>
+    </div>
+  </div>
+  <div id="mob-menu" class="md:hidden hidden border-t border-white/5 glass">
+    <div class="px-6 py-5 flex flex-col gap-4">
+      <a href="#about" onclick="toggleMob()" class="text-[13px] font-medium tracking-wider uppercase text-gray-400 hover:text-[#E30613] transition-colors">About</a>
+      <a href="#skills" onclick="toggleMob()" class="text-[13px] font-medium tracking-wider uppercase text-gray-400 hover:text-[#E30613] transition-colors">Skills</a>
+      <a href="#projects" onclick="toggleMob()" class="text-[13px] font-medium tracking-wider uppercase text-gray-400 hover:text-[#E30613] transition-colors">Projects</a>
+      <a href="#certs" onclick="toggleMob()" class="text-[13px] font-medium tracking-wider uppercase text-gray-400 hover:text-[#E30613] transition-colors">Certs</a>
+      <a href="#contact" onclick="toggleMob()" class="bg-[#E30613] text-white text-[12px] font-semibold tracking-[.15em] uppercase px-5 py-3 rounded-lg text-center">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero" class="relative min-h-screen flex items-center overflow-hidden">
+  <div class="absolute inset-0">
+    <img src="vaishnavi.jpg" class="w-full h-full object-cover opacity-[0.12] scale-105" alt="" />
+    <div class="absolute inset-0 bg-gradient-to-b from-[#050505] via-[#050505ee] to-[#050505]"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-[#050505] via-transparent to-[#050505]"></div>
+  </div>
+  <div class="absolute top-1/3 left-1/2 w-[700px] h-[700px] rounded-full bg-[#E30613] blur-[200px] opacity-[0.05] hero-glow"></div>
+  <div class="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-[#E30613] blur-[180px] opacity-[0.03]"></div>
+  <div class="absolute top-[15%] left-[10%] w-1 h-1 bg-[#E30613] rounded-full float" style="--d:4s;--dl:0s;opacity:.4"></div>
+  <div class="absolute top-[55%] left-[85%] w-1.5 h-1.5 bg-[#E30613] rounded-full float" style="--d:5s;--dl:1s;opacity:.3"></div>
+  <div class="absolute top-[25%] left-[75%] w-1 h-1 bg-white rounded-full float" style="--d:6s;--dl:2s;opacity:.2"></div>
+  <div class="absolute top-[70%] left-[20%] w-1 h-1 bg-white rounded-full float" style="--d:4.5s;--dl:.5s;opacity:.25"></div>
+  <div class="absolute top-[40%] left-[45%] w-2 h-2 bg-[#E30613] rounded-full float" style="--d:7s;--dl:3s;opacity:.15"></div>
+  <div class="absolute top-[80%] left-[60%] w-1 h-1 bg-[#E30613] rounded-full float" style="--d:5.5s;--dl:1.5s;opacity:.35"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full pt-24 pb-16">
+    <div class="grid lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-7">
+        <div class="inline-flex items-center gap-2.5 glass rounded-full px-4 py-2 mb-8 fu">
+          <div class="glow-dot" style="width:6px;height:6px"></div>
+          <span class="text-[11px] font-semibold tracking-[.15em] uppercase text-gray-400">Open to Internships · 2025</span>
+        </div>
+        <h1 class="font-display text-[clamp(3rem,8vw,6.5rem)] font-bold tracking-tight leading-[0.95] mb-6 fu fu-d1">
+          VAISHNAVI<br/><span class="grad-text">KHARYA</span>
+        </h1>
+        <div class="mb-8 fu fu-d2">
+          <p class="text-gray-400 font-light text-lg md:text-xl leading-relaxed max-w-xl">
+            B.Tech IT @ <span class="text-white font-medium">IIT Madras</span> — Crafting AI-powered tools, web experiences & creative solutions.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-4 fu fu-d3">
+          <a href="#projects" class="group relative inline-flex items-center gap-2.5">
+            <div class="absolute -inset-1 bg-[#E30613] rounded-lg opacity-0 group-hover:opacity-25 blur transition-opacity duration-300"></div>
+            <span class="relative bg-[#E30613] hover:bg-[#b91c1c] text-white text-[12px] font-semibold tracking-[.15em] uppercase px-7 py-4 rounded-lg transition-colors inline-flex items-center gap-2.5">
+              Explore Projects <iconify-icon icon="lucide:arrow-down-right" width="16"></iconify-icon>
+            </span>
+          </a>
+          <a href="#contact" class="border border-white/10 hover:border-white/25 text-white text-[12px] font-semibold tracking-[.15em] uppercase px-7 py-4 rounded-lg transition-all hover:bg-white/[0.03] inline-flex items-center gap-2.5">
+            <iconify-icon icon="lucide:send" width="16" class="text-[#E30613]"></iconify-icon> Get in Touch
+          </a>
+        </div>
+        <div class="flex items-center gap-5 mt-10 fu fu-d4">
+          <a href="https://github.com/vaishnavikharya7-alt" target="_blank" class="text-gray-600 hover:text-[#E30613] transition-colors"><iconify-icon icon="mdi:github" width="20"></iconify-icon></a>
+          <a href="https://www.linkedin.com/in/vaishnavikharya" target="_blank" class="text-gray-600 hover:text-[#E30613] transition-colors"><iconify-icon icon="mdi:linkedin" width="20"></iconify-icon></a>
+          <a href="mailto:vaishnavikharya7@gmail.com" class="text-gray-600 hover:text-[#E30613] transition-colors"><iconify-icon icon="lucide:mail" width="20"></iconify-icon></a>
+          <div class="w-px h-5 bg-white/10"></div>
+          <span class="text-[11px] text-gray-600 tracking-wider">📍 Mauranipur, Jhansi, UP</span>
+        </div>
+      </div>
+      <div class="lg:col-span-5 fu fu-d3 hidden lg:block">
+        <div class="code-block float" style="--d:6s;--dl:1s">
+          <div class="code-dots">
+            <div class="code-dot" style="background:#ff5f57"></div>
+            <div class="code-dot" style="background:#febc2e"></div>
+            <div class="code-dot" style="background:#28c840"></div>
+            <span class="text-[11px] text-gray-600 ml-3 font-mono">vaishnavi.py</span>
+          </div>
+          <div class="p-5 font-mono text-[13px] leading-7">
+            <div><span class="text-[#c678dd]">class</span> <span class="text-[#e5c07b]">VaishnaviKharya</span><span class="text-gray-500">:</span></div>
+            <div class="pl-5"><span class="text-gray-500">def</span> <span class="text-[#61afef]">__init__</span><span class="text-gray-500">(self):</span></div>
+            <div class="pl-10"><span class="text-gray-500">self.</span><span class="text-white">college</span> <span class="text-gray-500">=</span> <span class="text-[#98c379]">"IIT Madras"</span></div>
+            <div class="pl-10"><span class="text-gray-500">self.</span><span class="text-white">branch</span> <span class="text-gray-500">=</span> <span class="text-[#98c379]">"Information Technology"</span></div>
+            <div class="pl-10"><span class="text-gray-500">self.</span><span class="text-white">passion</span> <span class="text-gray-500">=</span> <span class="text-[#98c379]">"Building AI tools"</span></div>
+            <div class="pl-10"><span class="text-gray-500">self.</span><span class="text-white">projects</span> <span class="text-gray-500">=</span> <span class="text-[#d19a66]">10</span></div>
+            <div class="mt-2 pl-5"><span class="text-gray-500">def</span> <span class="text-[#61afef]">get_status</span><span class="text-gray-500">(self):</span></div>
+            <div class="pl-10"><span class="text-[#c678dd]">return</span> <span class="text-[#98c379]">"🟢 Open to internships"</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 fu fu-d5">
+    <span class="text-[10px] tracking-[.2em] uppercase text-gray-600 font-medium">Scroll</span>
+    <div class="w-5 h-8 rounded-full border border-white/10 flex items-start justify-center p-1.5">
+      <div class="w-1 h-2 bg-[#E30613] rounded-full" style="animation:floatY 1.5s ease-in-out infinite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="divider"></div>
+<section class="py-16 px-6">
+  <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8">
+    <div class="text-center fu"><div class="font-display text-4xl md:text-5xl font-bold grad-text ctr" data-t="10">0</div><div class="text-[11px] tracking-[.15em] uppercase text-gray-600 mt-2 font-medium">Projects</div></div>
+    <div class="text-center fu fu-d1"><div class="font-display text-4xl md:text-5xl font-bold grad-text ctr" data-t="12">0</div><div class="text-[11px] tracking-[.15em] uppercase text-gray-600 mt-2 font-medium">Certifications</div></div>
+    <div class="text-center fu fu-d2"><div class="font-display text-4xl md:text-5xl font-bold grad-text ctr" data-t="3">0</div><div class="text-[11px] tracking-[.15em] uppercase text-gray-600 mt-2 font-medium">Languages</div></div>
+    <div class="text-center fu fu-d3"><div class="font-display text-4xl md:text-5xl font-bold grad-text ctr" data-t="2">0</div><div class="text-[11px] tracking-[.15em] uppercase text-gray-600 mt-2 font-medium">Hackathons</div></div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about" class="py-28 px-6 relative">
+  <div class="absolute top-1/2 left-0 w-[350px] h-[350px] rounded-full bg-[#E30613] blur-[180px] opacity-[0.03] -translate-y-1/2"></div>
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="fu mb-14 text-center">
+      <span class="text-[11px] font-semibold tracking-[.2em] uppercase text-[#E30613]">Who I Am</span>
+      <h2 class="font-display text-4xl md:text-5xl font-bold tracking-tight mt-3">ABOUT ME</h2>
+    </div>
+    <div class="grid lg:grid-cols-12 gap-16 items-center">
+      <div class="lg:col-span-4 fu">
+        <div class="relative group">
+          <div class="aspect-[3/4] rounded-2xl overflow-hidden border border-white/5">
+            <img src="vaishnavi.jpg" alt="Vaishnavi" class="w-full h-full object-cover opacity-75 group-hover:opacity-90 group-hover:scale-105 transition-all duration-700" />
+          </div>
+          <div class="absolute -top-2 -left-2 w-8 h-8 border-t-2 border-l-2 border-[#E30613]/40 rounded-tl-lg"></div>
+          <div class="absolute -bottom-2 -right-2 w-8 h-8 border-b-2 border-r-2 border-[#E30613]/40 rounded-br-lg"></div>
+          <div class="absolute bottom-4 left-4 right-4 glass rounded-xl px-4 py-3 flex items-center gap-3">
+            <iconify-icon icon="lucide:map-pin" width="16" class="text-[#E30613]"></iconify-icon>
+            <div>
+              <div class="text-xs text-gray-300 font-medium">Mauranipur, Jhansi</div>
+              <div class="text-[10px] text-gray-600">Uttar Pradesh – 284204</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-8 fu fu-d2">
+        <p class="text-gray-300 font-light text-[17px] leading-[1.8] mb-5">
+          I'm a first-year <span class="text-white font-medium">B.Tech IT student at IIT Madras</span>, deeply passionate about Artificial Intelligence, Web Development, and solving real-world problems through code. My journey started with curiosity and has grown into a relentless drive to build things that matter.
+        </p>
+        <p class="text-gray-500 font-light leading-[1.8] mb-10">
+          From AI-powered code reviewers to smart study planners, I specialize in turning ideas into functional, polished projects. With a growing toolkit spanning Python, C, web technologies, and prompt engineering, I'm constantly expanding what I can create. I'm actively seeking internship opportunities where I can contribute to impactful projects while learning from the best.
+        </p>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div class="card card-no-overflow p-5 flex items-center gap-4 group">
+            <div class="w-12 h-12 rounded-xl bg-[#E30613]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#E30613]/20 transition-colors">
+              <iconify-icon icon="lucide:brain" width="22" class="text-[#E30613]"></iconify-icon>
+            </div>
+            <div><div class="text-sm font-semibold">AI & Machine Learning</div><div class="text-xs text-gray-600 mt-0.5">Core focus area</div></div>
+          </div>
+          <div class="card card-no-overflow p-5 flex items-center gap-4 group">
+            <div class="w-12 h-12 rounded-xl bg-[#E30613]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#E30613]/20 transition-colors">
+              <iconify-icon icon="lucide:globe" width="22" class="text-[#E30613]"></iconify-icon>
+            </div>
+            <div><div class="text-sm font-semibold">Web Development</div><div class="text-xs text-gray-600 mt-0.5">Frontend & responsive</div></div>
+          </div>
+          <div class="card card-no-overflow p-5 flex items-center gap-4 group">
+            <div class="w-12 h-12 rounded-xl bg-[#E30613]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#E30613]/20 transition-colors">
+              <iconify-icon icon="lucide:terminal" width="22" class="text-[#E30613]"></iconify-icon>
+            </div>
+            <div><div class="text-sm font-semibold">Problem Solving</div><div class="text-xs text-gray-600 mt-0.5">DSA & logic building</div></div>
+          </div>
+          <div class="card card-no-overflow p-5 flex items-center gap-4 group">
+            <div class="w-12 h-12 rounded-xl bg-[#E30613]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#E30613]/20 transition-colors">
+              <iconify-icon icon="lucide:palette" width="22" class="text-[#E30613]"></iconify-icon>
+            </div>
+            <div><div class="text-sm font-semibold">Design & Creativity</div><div class="text-xs text-gray-600 mt-0.5">UI/UX, graphics, video</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section class="py-28 px-6 relative">
+  <div class="max-w-4xl mx-auto">
+    <div class="fu mb-14 text-center">
+      <span class="text-[11px] font-semibold tracking-[.2em] uppercase text-[#E30613]">Academic Journey</span>
+      <h2 class="font-display text-4xl md:text-5xl font-bold tracking-tight mt-3">EDUCATION</h2>
+    </div>
+    <div class="relative fu">
+      <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#E30613]/40 via-[#E30613]/10 to-transparent md:-translate-x-px"></div>
+      <div class="relative flex items-start gap-6 md:gap-0">
+        <div class="hidden md:block md:w-1/2 md:pr-12 md:text-right">
+          <div class="text-[11px] tracking-[.15em] uppercase text-gray-600 font-medium mb-1">2026 – 2030</div>
+          <div class="text-[11px] tracking-[.15em] uppercase text-[#E30613] font-semibold">Currently in 1st Year</div>
+        </div>
+        <div class="relative z-10 w-12 h-12 rounded-full bg-[#050505] border-2 border-[#E30613] flex items-center justify-center flex-shrink-0 md:absolute md:left-1/2 md:-translate-x-1/2">
+          <iconify-icon icon="lucide:graduation-cap" width="18" class="text-[#E30613]"></iconify-icon>
+        </div>
+        <div class="flex-1 md:w-1/2 md:pl-12">
+          <div class="md:hidden text-[11px] tracking-[.15em] uppercase text-gray-600 font-medium mb-2">2026 – 2030 · 1st Year</div>
+          <div class="card card-no-overflow p-6 md:p-8">
+            <div class="flex items-start gap-3 mb-3">
+              <div class="glow-dot mt-1.5 hidden md:block"></div>
+              <div>
+                <h3 class="font-display text-xl md:text-2xl font-semibold tracking-tight">B.Tech – Information Technology</h3>
+                <p class="text-gray-400 font-light mt-1 text-[15px]">Indian Institute of Technology, Madras</p>
+              </div>
+            </div>
+            <div class="flex flex-wrap gap-2 mt-4">
+              <span class="text-[10px] tracking-[.1em] uppercase font-semibold bg-[#E30613]/10 text-[#E30613] border border-[#E30613]/15 px-3 py-1.5 rounded-full">Premier Institute</span>
+              <span class="text-[10px] tracking-[.1em] uppercase font-semibold bg-white/5 text-gray-400 border border-white/5 px-3 py-1.5 rounded-full">Full-Time</span>
+              <span class="text-[10px] tracking-[.1em] uppercase font-semibold bg-white/5 text-gray-400 border border-white/5 px-3 py-1.5 rounded-full">4 Year Program</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="py-28 px-6 relative">
+  <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-[#E30613] blur-[200px] opacity-[0.025]"></div>
+  <div class="max-w-6xl mx-auto relative z-10">
+    <div class="fu mb-14 text-center">
+      <span class="text-[11px] font-semibold tracking-[.2em] uppercase text-[#E30613]">My Toolkit</span>
+      <h2 class="font-display text-4xl md:text-5xl font-bold tracking-tight mt-3">TECHNICAL SKILLS</h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+      <div class="card card-no-overflow p-6 text-center fu skill-ring-card" data-pct="85">
+        <div class="relative w-24 h-24 mx-auto mb-4">
+          <svg class="skill-ring w-full h-full" viewBox="0 0 88 88">
+            <circle cx="44" cy="44" r="40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="4"/>
+            <circle class="progress" cx="44" cy="44" r="40" fill="none" stroke="#E30613" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center font-display text-2xl font-bold">85<span class="text-sm text-gray-500">%</span></div>
+        </div>
+        <div class="text-sm font-semibold">Python</div>
+        <div class="text-[10px] text-gray-600 mt-1 tracking-wider uppercase">Primary Language</div>
+      </div>
+      <div class="card card-no-overflow p-6 text-center fu fu-d1 skill-ring-card" data-pct="70">
+        <div class="relative w-24 h-24 mx-auto mb-4">
+          <svg class="skill-ring w-full h-full" viewBox="0 0 88 88">
+            <circle cx="44" cy="44" r="40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="4"/>
+            <circle class="progress" cx="44" cy="44" r="40" fill="none" stroke="#E30613" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center font-display text-2xl font-bold">70<span class="text-sm text-gray-500">%</span></div>
+        </div>
+        <div class="text-sm font-semibold">C</div>
+        <div class="text-[10px] text-gray-600 mt-1 tracking-wider uppercase">Systems Programming</div>
+      </div>
+      <div class="card card-no-overflow p-6 text-center fu fu-d2 skill-ring-card" data-pct="90">
+        <div class="relative w-24 h-24 mx-auto mb-4">
+          <svg class="skill-ring w-full h-full" viewBox="0 0 88 88">
+            <circle cx="44" cy="44" r="40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="4"/>
+            <circle class="progress" cx="44" cy="44" r="40" fill="none" stroke="#E30613" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center font-display text-2xl font-bold">90<span class="text-sm text-gray-500">%</span></div>
+        </div>
+        <div class="text-sm font-semibold">HTML / CSS</div>
+        <div class="text-[10px] text-gray-600 mt-1 tracking-wider uppercase">Web Development</div>
+      </div>
+      <div class="card card-no-overflow p-6 text-center fu fu-d3 skill-ring-card" data-pct="40">
+        <div class="relative w-24 h-24 mx-auto mb-4">
+          <svg class="skill-ring w-full h-full" viewBox="0 0 88 88">
+            <circle cx="44" cy="44" r="40" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="4"/>
+            <circle class="progress" cx="44" cy="44" r="40" fill="none" stroke="#E30613" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+          <div class="absolute inset-0 flex items-center justify-center font-display text-2xl font-bold">40<span class="text-sm text-gray-500">%</span></div>
+        </div>
+        <div class="text-sm font-semibold">C++</div>
+        <div class="text-[10px] text-gray-600 mt-1 tracking-wider uppercase">Currently Learning</div>
+      </div>
+    </div>
+    <div class="max-w-3xl mx-auto space-y-3">
+      <div class="card card-no-overflow fu overflow-hidden skill-acc">
+        <button onclick="toggleAcc(this)" class="w-full flex items-center justify-between p-5 text-left">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl bg-[#E30613]/10 flex items-center justify-center"><iconify-icon icon="lucide:wrench" width="18" class="text-[#E30613]"></iconify-icon></div>
+            <div><span class="text-sm font-semibold">Tools & Technologies</span><span class="text-xs text-gray-600 ml-2">GitHub · MongoDB · AI Tools · VS Code</span></div>
+          </div>
+          <iconify-icon icon="lucide:plus" width="18" class="text-gray-500 transition-transform duration-300 acc-icon"></iconify-icon>
+        </button>
+        <div class="acc-c hidden px-5 pb-5"><div class="acc-body flex flex-wrap gap-2 pl-14">
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">GitHub</span>
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">MongoDB</span>
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">Claude AI</span>
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">Google AI Studio</span>
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">VS Code</span>
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">Tkinter</span>
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">Python Turtle</span>
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">Google Analytics</span>
+        </div></div>
+      </div>
+      <div class="card card-no-overflow fu fu-d1 overflow-hidden skill-acc">
+        <button onclick="toggleAcc(this)" class="w-full flex items-center justify-between p-5 text-left">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl bg-[#E30613]/10 flex items-center justify-center"><iconify-icon icon="lucide:lightbulb" width="18" class="text-[#E30613]"></iconify-icon></div>
+            <div><span class="text-sm font-semibold">Concepts & Practices</span><span class="text-xs text-gray-600 ml-2">DSA · OOP · Prompt Engineering</span></div>
+          </div>
+          <iconify-icon icon="lucide:plus" width="18" class="text-gray-500 transition-transform duration-300 acc-icon"></iconify-icon>
+        </button>
+        <div class="acc-c hidden px-5 pb-5"><div class="acc-body flex flex-wrap gap-2 pl-14">
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">Data Structures</span>
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">OOP</span>
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">Problem Solving</span>
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">Prompt Engineering</span>
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">Data Analytics</span>
+          <span class="text-xs bg-white/[0.03] border border-white/[0.06] px-3 py-1.5 rounded-lg text-gray-400 hover:border-[#E30613]/20 hover:text-gray-300 transition-colors cursor-default">Agile Thinking</span>
+        </div></div>
+      </div>
+      <div class="card card-no-overflow fu fu-d2 overflow-hidden skill-acc">
+        <button onclick="toggleAcc(this)" class="w-full flex items-center justify-between p-5 text-left">
+          <div class="flex items-center gap-4">
+            <div class="w-10 h-10 rounded-xl bg-[#E30613]/10 flex items-center justify-center"><iconify-icon icon="lucide:sparkles" width="18" class="text-[#E30613]"></iconify-icon></div>
+            <div><span class="text-sm font-semibold">Soft & Creative Skills</span><span class="text-xs text-gray-600 ml-2">Communication · Design · Photography</span></div>
+          </div>
+          <iconify-icon icon="lucide:plus" width="18" class="text-gray-500 transition-transform duration-300 acc-icon"></iconify-icon>
+        </button>
+        <div class="acc-c hidden px-5 pb-5"><div class="acc-body flex flex-wrap gap-2 pl-14">
+          <span class="text-xs bg-[#E30613]/8 border border-[#E30613]/15 px-3 py-1.5 rounded-lg text-[#f87171] cursor-default">Communication</span>
+          <span class="text-xs bg-[#E30613]/8 border border-[#E30613]/15 px-3 py-1.5 rounded-lg text-[#f87171] cursor-default">Creativity</span>
+          <span class="text-xs bg-[#E30613]/8 border border-[#E30613]/15 px-3 py-1.5 rounded-lg text-[#f87171] cursor-default">Teamwork</span>
+          <span class="text-xs bg-[#E30613]/8 border border-[#E30613]/15 px-3 py-1.5 rounded-lg text-[#f87171] cursor-default">Graphic Design</span>
+          <span class="text-xs bg-[#E30613]/8 border border-[#E30613]/15 px-3 py-1.5 rounded-lg text-[#f87171] cursor-default">Video Editing</span>
+          <span class="text-xs bg-[#E30613]/8 border border-[#E30613]/15 px-3 py-1.5 rounded-lg text-[#f87171] cursor-default">Photography</span>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="py-28 px-6 relative">
+  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-[#E30613] blur-[200px] opacity-[0.025]"></div>
+  <div class="max-w-7xl mx-auto relative z-10">
+    <div class="fu mb-6 text-center">
+      <span class="text-[11px] font-semibold tracking-[.2em] uppercase text-[#E30613]">What I've Built</span>
+      <h2 class="font-display text-4xl md:text-5xl font-bold tracking-tight mt-3">PROJECTS</h2>
+      <p class="text-gray-500 font-light mt-4 max-w-lg mx-auto text-[15px]">AI tools, web applications, and Python utilities — each built to solve real problems.</p>
+    </div>
+    <div class="flex justify-center gap-2 mb-12 fu fu-d1 flex-wrap">
+      <button onclick="filterP('all')" class="fbtn act text-[11px] font-semibold tracking-[.12em] uppercase px-5 py-2.5 rounded-full border transition-all" data-f="all">All Projects</button>
+      <button onclick="filterP('ai')" class="fbtn text-[11px] font-semibold tracking-[.12em] uppercase px-5 py-2.5 rounded-full border border-white/[0.06] text-gray-500 transition-all" data-f="ai">AI Tools</button>
+      <button onclick="filterP('web')" class="fbtn text-[11px] font-semibold tracking-[.12em] uppercase px-5 py-2.5 rounded-full border border-white/[0.06] text-gray-500 transition-all" data-f="web">Web Dev</button>
+      <button onclick="filterP('py')" class="fbtn text-[11px] font-semibold tracking-[.12em] uppercase px-5 py-2.5 rounded-full border border-white/[0.06] text-gray-500 transition-all" data-f="py">Python</button>
+    </div>
+    <div id="pgrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+    <div class="text-center mt-12 fu">
+      <a href="https://github.com/vaishnavikharya7-alt" target="_blank" class="group relative inline-flex items-center gap-2.5">
+        <div class="absolute -inset-1 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 blur transition-opacity"></div>
+        <span class="relative border border-white/10 hover:border-white/20 text-gray-400 hover:text-white text-[11px] font-semibold tracking-[.15em] uppercase px-7 py-3.5 rounded-lg transition-all inline-flex items-center gap-2.5 hover:bg-white/[0.02]">
+          <iconify-icon icon="mdi:github" width="18"></iconify-icon> View All on GitHub
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CERTS MARQUEE -->
+<div class="divider"></div>
+<section class="py-16 overflow-hidden">
+  <div class="fu mb-10 text-center">
+    <span class="text-[11px] font-semibold tracking-[.2em] uppercase text-[#E30613]">Verified Credentials</span>
+    <h2 class="font-display text-3xl md:text-4xl font-bold tracking-tight mt-3">CERTIFICATIONS</h2>
+  </div>
+  <div class="relative">
+    <div class="absolute left-0 top-0 bottom-0 w-40 bg-gradient-to-r from-[#050505] to-transparent z-10 pointer-events-none"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-40 bg-gradient-to-l from-[#050505] to-transparent z-10 pointer-events-none"></div>
+    <div class="flex marquee" style="width:max-content" id="marquee-track"></div>
+  </div>
+</section>
+
+<!-- CERTS GRID -->
+<section id="certs" class="py-28 px-6">
+  <div class="max-w-5xl mx-auto">
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4" id="cert-grid"></div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section class="py-28 px-6 relative">
+  <div class="absolute top-1/2 right-0 w-[400px] h-[400px] rounded-full bg-[#E30613] blur-[180px] opacity-[0.03] -translate-y-1/2"></div>
+  <div class="max-w-5xl mx-auto relative z-10">
+    <div class="fu mb-14 text-center">
+      <span class="text-[11px] font-semibold tracking-[.2em] uppercase text-[#E30613]">Milestones</span>
+      <h2 class="font-display text-4xl md:text-5xl font-bold tracking-tight mt-3">ACHIEVEMENTS</h2>
+    </div>
+    <div class="grid md:grid-cols-2 gap-5">
+      <div class="card card-no-overflow p-6 fu group">
+        <div class="flex items-start gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#E30613]/20 to-[#E30613]/5 flex items-center justify-center flex-shrink-0 group-hover:from-[#E30613]/30 group-hover:to-[#E30613]/10 transition-all">
+            <iconify-icon icon="lucide:trophy" width="26" class="text-[#E30613]"></iconify-icon>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-1.5">EY Techathon 6.0</h3>
+            <p class="text-gray-500 font-light text-sm leading-relaxed">Qualified through Round 1 & Round 2 — competed among thousands of participants in EY's flagship technology hackathon.</p>
+            <div class="flex items-center gap-2 mt-3"><span class="text-[10px] tracking-[.1em] uppercase font-semibold bg-[#E30613]/10 text-[#E30613] px-2.5 py-1 rounded-full">R2 Qualified</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card card-no-overflow p-6 fu fu-d1 group">
+        <div class="flex items-start gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#E30613]/20 to-[#E30613]/5 flex items-center justify-center flex-shrink-0 group-hover:from-[#E30613]/30 group-hover:to-[#E30613]/10 transition-all">
+            <iconify-icon icon="lucide:rocket" width="26" class="text-[#E30613]"></iconify-icon>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-1.5">Tata Imagination Challenge 2025</h3>
+            <p class="text-gray-500 font-light text-sm leading-relaxed">Participated in Tata Group's national-level innovation challenge, presenting creative technology solutions.</p>
+            <div class="flex items-center gap-2 mt-3"><span class="text-[10px] tracking-[.1em] uppercase font-semibold bg-[#E30613]/10 text-[#E30613] px-2.5 py-1 rounded-full">National Level</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card card-no-overflow p-6 fu fu-d2 group">
+        <div class="flex items-start gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#E30613]/20 to-[#E30613]/5 flex items-center justify-center flex-shrink-0 group-hover:from-[#E30613]/30 group-hover:to-[#E30613]/10 transition-all">
+            <iconify-icon icon="lucide:folder-git-2" width="26" class="text-[#E30613]"></iconify-icon>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-1.5">10+ Projects Portfolio</h3>
+            <p class="text-gray-500 font-light text-sm leading-relaxed">Built a diverse portfolio spanning AI-powered tools, web applications, games, and Python utilities — all shipped and documented.</p>
+            <div class="flex items-center gap-2 mt-3">
+              <span class="text-[10px] tracking-[.1em] uppercase font-semibold bg-[#E30613]/10 text-[#E30613] px-2.5 py-1 rounded-full">Full Stack</span>
+              <span class="text-[10px] tracking-[.1em] uppercase font-semibold bg-white/5 text-gray-500 px-2.5 py-1 rounded-full">AI + Web + Python</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card card-no-overflow p-6 fu fu-d3 group">
+        <div class="flex items-start gap-4">
+          <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#E30613]/20 to-[#E30613]/5 flex items-center justify-center flex-shrink-0 group-hover:from-[#E30613]/30 group-hover:to-[#E30613]/10 transition-all">
+            <iconify-icon icon="lucide:swords" width="26" class="text-[#E30613]"></iconify-icon>
+          </div>
+          <div>
+            <h3 class="font-semibold mb-1.5">Active Coding Challenges</h3>
+            <p class="text-gray-500 font-light text-sm leading-relaxed">Regular participant in competitive coding and problem-solving challenges, continuously sharpening algorithmic thinking.</p>
+            <div class="flex items-center gap-2 mt-3">
+              <span class="text-[10px] tracking-[.1em] uppercase font-semibold bg-[#E30613]/10 text-[#E30613] px-2.5 py-1 rounded-full">DSA</span>
+              <span class="text-[10px] tracking-[.1em] uppercase font-semibold bg-white/5 text-gray-500 px-2.5 py-1 rounded-full">Consistent</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTERESTS -->
+<section class="py-20 px-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="fu mb-10 text-center">
+      <span class="text-[11px] font-semibold tracking-[.2em] uppercase text-[#E30613]">Beyond Code</span>
+      <h2 class="font-display text-3xl font-bold tracking-tight mt-3">WHAT DRIVES ME</h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 fu">
+      <div class="card card-no-overflow p-6 text-center group cursor-default">
+        <div class="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">🧠</div>
+        <div class="text-sm font-semibold">Artificial Intelligence</div>
+      </div>
+      <div class="card card-no-overflow p-6 text-center group cursor-default">
+        <div class="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">💻</div>
+        <div class="text-sm font-semibold">Coding & Dev</div>
+      </div>
+      <div class="card card-no-overflow p-6 text-center group cursor-default">
+        <div class="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">🚀</div>
+        <div class="text-sm font-semibold">Emerging Tech</div>
+      </div>
+      <div class="card card-no-overflow p-6 text-center group cursor-default">
+        <div class="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">📷</div>
+        <div class="text-sm font-semibold">Photography</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT (FIXED) ===== -->
+<section id="contact" class="py-28 px-6 relative">
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-[#E30613] blur-[200px] opacity-[0.03]"></div>
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="fu mb-14 text-center">
+      <span class="text-[11px] font-semibold tracking-[.2em] uppercase text-[#E30613]">Let's Build Together</span>
+      <h2 class="font-display text-4xl md:text-5xl font-bold tracking-tight mt-3">GET IN TOUCH</h2>
+      <p class="text-gray-500 font-light mt-4 max-w-lg mx-auto text-[15px]">Got an internship opportunity, collaboration idea, or just want to say hi? I'd love to connect.</p>
+    </div>
+
+    <!-- Contact cards -->
+    <div class="grid md:grid-cols-3 gap-4 mb-12">
+      <a href="mailto:vaishnavikharya7@gmail.com" class="card card-no-overflow p-5 text-center group block fu">
+        <div class="w-11 h-11 rounded-xl bg-[#E30613]/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-[#E30613]/20 transition-colors">
+          <iconify-icon icon="lucide:mail" width="20" class="text-[#E30613]"></iconify-icon>
+        </div>
+        <div class="text-[10px] tracking-[.15em] uppercase text-gray-600 font-medium mb-1">Email</div>
+        <div class="text-xs text-gray-400 break-all">vaishnavikharya7@gmail.com</div>
+      </a>
+      <a href="https://www.linkedin.com/in/vaishnavikharya" target="_blank" class="card card-no-overflow p-5 text-center group block fu fu-d1">
+        <div class="w-11 h-11 rounded-xl bg-[#E30613]/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-[#E30613]/20 transition-colors">
+          <iconify-icon icon="mdi:linkedin" width="20" class="text-[#E30613]"></iconify-icon>
+        </div>
+        <div class="text-[10px] tracking-[.15em] uppercase text-gray-600 font-medium mb-1">LinkedIn</div>
+        <div class="text-xs text-gray-400">vaishnavikharya</div>
+      </a>
+      <a href="https://github.com/vaishnavikharya7-alt" target="_blank" class="card card-no-overflow p-5 text-center group block fu fu-d2">
+        <div class="w-11 h-11 rounded-xl bg-[#E30613]/10 flex items-center justify-center mx-auto mb-3 group-hover:bg-[#E30613]/20 transition-colors">
+          <iconify-icon icon="mdi:github" width="20" class="text-[#E30613]"></iconify-icon>
+        </div>
+        <div class="text-[10px] tracking-[.15em] uppercase text-gray-600 font-medium mb-1">GitHub</div>
+        <div class="text-xs text-gray-400">vaishnavikharya7-alt</div>
+      </a>
+    </div>
+
+    <!-- Form - FIXED: overflow visible, proper button, mailto fallback -->
+    <form id="cform" class="card card-no-overflow p-6 md:p-8 fu" novalidate>
+      <div class="grid md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="text-[10px] tracking-[.15em] uppercase text-gray-600 font-semibold mb-2 block">Name <span class="text-[#E30613]">*</span></label>
+          <input type="text" id="f-name" required placeholder="Your name" class="form-input" />
+        </div>
+        <div>
+          <label class="text-[10px] tracking-[.15em] uppercase text-gray-600 font-semibold mb-2 block">Email <span class="text-[#E30613]">*</span></label>
+          <input type="email" id="f-email" required placeholder="your@email.com" class="form-input" />
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="text-[10px] tracking-[.15em] uppercase text-gray-600 font-semibold mb-2 block">Subject <span class="text-[#E30613]">*</span></label>
+        <input type="text" id="f-subject" required placeholder="Internship / Collaboration / Hello!" class="form-input" />
+      </div>
+      <div class="mb-6">
+        <label class="text-[10px] tracking-[.15em] uppercase text-gray-600 font-semibold mb-2 block">Message <span class="text-[#E30613]">*</span></label>
+        <textarea id="f-message" required rows="4" placeholder="Tell me about the opportunity..." class="form-input" style="resize:none"></textarea>
+      </div>
+
+      <!-- Validation message area -->
+      <div id="form-error" class="hidden mb-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm"></div>
+
+      <!-- Submit button -->
+      <button type="button" id="submit-btn" class="submit-btn" onclick="handleFormSubmit()">
+        <div class="btn-glow"></div>
+        <iconify-icon icon="lucide:send" width="16" id="btn-icon"></iconify-icon>
+        <span id="btn-text">Send Message</span>
+      </button>
+
+      <!-- Fallback note -->
+      <p class="text-center text-gray-700 text-[11px] mt-4 tracking-wide">
+        Or directly email at <a href="mailto:vaishnavikharya7@gmail.com" class="text-[#E30613]/60 hover:text-[#E30613] transition-colors underline underline-offset-2">vaishnavikharya7@gmail.com</a>
+      </p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<div class="divider"></div>
+<footer class="py-14 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-4">
+        <span class="font-display text-2xl font-bold grad-text">VK</span>
+        <div class="w-px h-5 bg-white/10"></div>
+        <span class="text-gray-600 text-sm">Vaishnavi Kharya</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <a href="mailto:vaishnavikharya7@gmail.com" class="w-10 h-10 rounded-xl border border-white/[0.06] flex items-center justify-center text-gray-600 hover:text-[#E30613] hover:border-[#E30613]/20 transition-all hover:bg-[#E30613]/5"><iconify-icon icon="lucide:mail" width="17"></iconify-icon></a>
+        <a href="https://www.linkedin.com/in/vaishnavikharya" target="_blank" class="w-10 h-10 rounded-xl border border-white/[0.06] flex items-center justify-center text-gray-600 hover:text-[#E30613] hover:border-[#E30613]/20 transition-all hover:bg-[#E30613]/5"><iconify-icon icon="mdi:linkedin" width="17"></iconify-icon></a>
+        <a href="https://github.com/vaishnavikharya7-alt" target="_blank" class="w-10 h-10 rounded-xl border border-white/[0.06] flex items-center justify-center text-gray-600 hover:text-[#E30613] hover:border-[#E30613]/20 transition-all hover:bg-[#E30613]/5"><iconify-icon icon="mdi:github" width="17"></iconify-icon></a>
+      </div>
+      <div class="text-gray-700 text-xs tracking-wider">© 2025 · Crafted with <span class="text-[#E30613]">♥</span></div>
+    </div>
+  </div>
+</footer>
+
+<button id="btt" onclick="window.scrollTo({top:0,behavior:'smooth'})" class="fixed bottom-6 left-6 z-[800] w-11 h-11 rounded-xl bg-[#E30613] text-white flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 hover:bg-[#b91c1c] shadow-lg shadow-[#E30613]/20">
+  <iconify-icon icon="lucide:arrow-up" width="18"></iconify-icon>
+</button>
+
+<script>
+// ===== DATA =====
+const projects = [
+  { title:'AI Code Reviewer', cat:'ai', img:'code-reviewer-dark-ai-tool', badge:'AI', badgeBg:'bg-[#E30613]',
+    desc:'AI-powered code analysis tool that reviews source code for bugs, performance issues, and security vulnerabilities. Provides beginner-friendly explanations and actionable optimization suggestions.',
+    bullets:['Analyzes code for bugs & anti-patterns','Detects security vulnerabilities','Beginner-friendly explanations','Optimization recommendations'],
+    tags:['Python','AI','NLP','Code Analysis']},
+  { title:'StudyForge – AI Study Planner', cat:'ai', img:'StudyForge.jpg', badge:'AI', badgeBg:'bg-[#E30613]',
+    desc:'Smart study planner with integrated Pomodoro timer that generates adaptive schedules based on exam timelines and learning patterns.',
+    bullets:['AI-generated adaptive study plans','Integrated Pomodoro timer','Exam-timeline scheduling','Personalized learning adjustments'],
+    tags:['Python','AI','Productivity','Scheduling']},
+  { title:'AI Accessibility & Security Analyzer', cat:'ai', img:'web-security-shield-dark', badge:'AI', badgeBg:'bg-[#E30613]',
+    desc:'Comprehensive web analysis tool that checks websites for WCAG 2.2 accessibility compliance and identifies common security vulnerabilities.',
+    bullets:['WCAG 2.2 compliance checking','Security vulnerability scanning','Detailed accessibility reports','Remediation suggestions'],
+    tags:['Python','WCAG','Security','Web']},
+  { title:'Nexlify – Business Website', cat:'web', img:'modern-business-web-dark', badge:'WEB', badgeBg:'bg-white/10',
+    desc:'Modern mobile-first business website designed with clean UI/UX, optimized performance, and responsive layouts across all devices.',
+    bullets:['Mobile-first responsive design','Optimized UI/UX','Performance optimized','Cross-browser compatible'],
+    tags:['HTML','CSS','Responsive','UI/UX']},
+  { title:'Tic Tac Toe AI Game', cat:'py', img:'tictactoe-game-board-minimal', badge:'PY', badgeBg:'bg-white/10',
+    desc:'Python-based Tic Tac Toe game featuring an AI opponent with intelligent move selection and multiple gameplay modes.',
+    bullets:['AI opponent with smart strategy','Multiple gameplay modes','Clean terminal interface','Win/draw detection'],
+    tags:['Python','AI','Game Dev','Logic']},
+  { title:'Smart Calculator (GUI)', cat:'py', img:'calculator-gui-scientific', badge:'PY', badgeBg:'bg-white/10',
+    desc:'Advanced GUI calculator built with Python Tkinter featuring scientific functions, calculation history, and an intuitive interface.',
+    bullets:['Scientific calculation functions','Calculation history tracking','Intuitive Tkinter GUI','Keyboard support'],
+    tags:['Python','Tkinter','GUI','Math']},
+  { title:'Telemetry Converter', cat:'py', img:'data-converter-utility-dark', badge:'PY', badgeBg:'bg-white/10',
+    desc:'Data conversion utility that efficiently handles structured telemetry data inputs, converting between various formats.',
+    bullets:['Structured data parsing','Multi-format conversion','Efficient input handling','Error-tolerant processing'],
+    tags:['Python','Data','Utility']},
+  { title:'Flower Design Generator', cat:'py', img:'flower-art-creative-colorful', badge:'PY', badgeBg:'bg-white/10',
+    desc:'Creative graphical program using Python Turtle that generates intricate flower designs through algorithmic patterns.',
+    bullets:['Algorithmic flower patterns','Customizable color schemes','Multiple design variations','Export-ready graphics'],
+    tags:['Python','Turtle','Graphics','Creative']},
+];
+
+const certs = [
+  {t:'MongoDB: SQL to Document Model',i:'MongoDB University',d:'Apr 2026',ic:'mdi:database'},
+  {t:'Monitoring MongoDB with Built-in Tools',i:'MongoDB University',d:'Apr 2026',ic:'mdi:monitor-dashboard'},
+  {t:'Introduction to Data Science',i:'Cisco Networking Academy',d:'Mar 2026',ic:'lucide:bar-chart-3'},
+  {t:'Google Analytics Certification',i:'Google Skillshop',d:'Till Apr 2027',ic:'mdi:google-analytics'},
+  {t:'AI Fluency Framework & Foundations',i:'Anthropic',d:'2025',ic:'lucide:brain'},
+  {t:'Claude 101',i:'Anthropic',d:'2025',ic:'lucide:sparkles'},
+  {t:'Generative AI Mastermind',i:'Outskill',d:'2025',ic:'lucide:zap'},
+  {t:'Generative AI for Beginners',i:'Simplilearn',d:'2025',ic:'lucide:rocket'},
+  {t:'AI Agents for Beginners',i:'Simplilearn',d:'2025',ic:'lucide:bot'},
+  {t:'Generative AI Studio',i:'Simplilearn',d:'2025',ic:'lucide:monitor-play'},
+  {t:'Introduction to Image Generation',i:'Google',d:'2025',ic:'lucide:image'},
+  {t:'Getting Started with Microsoft Excel',i:'Coursera',d:'2025',ic:'mdi:file-excel'},
+];
+
+// ===== BUILD PROJECTS =====
+const pg = document.getElementById('pgrid');
+projects.forEach((p,i) => {
+  const el = document.createElement('div');
+  el.className = 'pcard card overflow-hidden cursor-pointer fu fu-d' + Math.min(i%3+1,5);
+  el.dataset.cat = p.cat;
+  el.onclick = () => openModal(p);
+  el.innerHTML = '<div class="proj-img aspect-[16/10]"><img src="https://picsum.photos/seed/' + p.img + '/600/380.jpg" alt="' + p.title + '" class="w-full h-full object-cover opacity-60" loading="lazy" /><div class="absolute top-3 left-3 z-10"><span class="text-[10px] tracking-[.1em] uppercase font-bold ' + p.badgeBg + ' text-white px-2.5 py-1 rounded-md">' + p.badge + '</span></div></div><div class="p-5"><h3 class="font-display text-lg font-semibold tracking-tight mb-1.5">' + p.title + '</h3><p class="text-gray-500 text-sm font-light leading-relaxed line-clamp-2">' + p.desc + '</p><div class="flex flex-wrap gap-1.5 mt-3">' + p.tags.slice(0,3).map(function(t){return '<span class="text-[10px] bg-white/[0.03] text-gray-600 px-2 py-0.5 rounded-md">' + t + '</span>';}).join('') + '</div></div>';
+  pg.appendChild(el);
+});
+
+// ===== BUILD CERTS =====
+const cg = document.getElementById('cert-grid');
+const mt = document.getElementById('marquee-track');
+certs.forEach((c,i) => {
+  const card = document.createElement('div');
+  card.className = 'card card-no-overflow p-4 flex items-start gap-3 fu fu-d' + Math.min(i%3+1,5);
+  card.innerHTML = '<div class="w-9 h-9 rounded-lg bg-[#E30613]/10 flex items-center justify-center flex-shrink-0 mt-0.5"><iconify-icon icon="' + c.ic + '" width="16" class="text-[#E30613]"></iconify-icon></div><div class="min-w-0"><h4 class="text-[13px] font-medium leading-snug">' + c.t + '</h4><div class="flex items-center gap-1.5 mt-1"><span class="text-[11px] text-gray-600">' + c.i + '</span><span class="text-gray-800">·</span><span class="text-[11px] text-gray-700">' + c.d + '</span></div></div>';
+  cg.appendChild(card);
+  [0,1].forEach(function() {
+    const item = document.createElement('div');
+    item.className = 'glass rounded-lg px-5 py-3 flex items-center gap-3 flex-shrink-0';
+    item.style.minWidth = '320px';
+    item.innerHTML = '<iconify-icon icon="' + c.ic + '" width="16" class="text-[#E30613] flex-shrink-0"></iconify-icon><span class="text-[13px] text-gray-400 whitespace-nowrap truncate">' + c.t + '</span><span class="text-[11px] text-gray-700 ml-auto flex-shrink-0">' + c.i + '</span>';
+    mt.appendChild(item);
+  });
+});
+
+// ===== LOADER =====
+window.addEventListener('load', function() {
+  setTimeout(function() { document.getElementById('loader').classList.add('hidden'); }, 600);
+});
+
+// ===== SCROLL PROGRESS =====
+window.addEventListener('scroll', function() {
+  var h = document.documentElement;
+  document.getElementById('scroll-progress').style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100 + '%';
+}, {passive:true});
+
+// ===== NAV SCROLL =====
+window.addEventListener('scroll', function() {
+  var y = window.scrollY;
+  var nav = document.getElementById('nav');
+  var btt = document.getElementById('btt');
+  if (y > 80) { nav.classList.add('glass'); nav.style.borderBottom = '1px solid rgba(255,255,255,0.03)'; }
+  else { nav.classList.remove('glass'); nav.style.borderBottom = 'none'; }
+  btt.style.opacity = y > 600 ? '1' : '0';
+  btt.style.pointerEvents = y > 600 ? 'auto' : 'none';
+  var secs = ['about','skills','projects','certs','contact'];
+  var cur = '';
+  secs.forEach(function(id) { var s = document.getElementById(id); if (s && y >= s.offsetTop - 250) cur = id; });
+  document.querySelectorAll('.nl').forEach(function(l) { l.classList.toggle('act', l.getAttribute('href') === '#' + cur); });
+}, {passive:true});
+
+// ===== MOBILE MENU =====
+function toggleMob() {
+  var m = document.getElementById('mob-menu');
+  var ic = document.getElementById('mob-icon');
+  m.classList.toggle('hidden');
+  ic.setAttribute('icon', m.classList.contains('hidden') ? 'lucide:menu' : 'lucide:x');
+}
+
+// ===== ACCORDION =====
+function toggleAcc(btn) {
+  var c = btn.nextElementSibling;
+  var icon = btn.querySelector('.acc-icon');
+  var open = !c.classList.contains('hidden');
+  document.querySelectorAll('.acc-c').forEach(function(x) { x.classList.add('hidden'); });
+  document.querySelectorAll('.acc-icon').forEach(function(x) { x.setAttribute('icon','lucide:plus'); x.style.transform = 'rotate(0deg)'; });
+  if (!open) { c.classList.remove('hidden'); icon.setAttribute('icon','lucide:minus'); icon.style.transform = 'rotate(180deg)'; }
+}
+
+// ===== FILTER =====
+function filterP(cat) {
+  document.querySelectorAll('.fbtn').forEach(function(b) {
+    var active = b.dataset.f === cat;
+    b.classList.toggle('act', active);
+    if (active) { b.style.borderColor = 'rgba(227,6,19,0.4)'; b.style.color = '#E30613'; b.style.background = 'rgba(227,6,19,0.08)'; }
+    else { b.style.borderColor = 'rgba(255,255,255,0.06)'; b.style.color = ''; b.style.background = ''; }
+  });
+  document.querySelectorAll('.pcard').forEach(function(c) {
+    var show = cat === 'all' || c.dataset.cat === cat;
+    c.style.display = show ? '' : 'none';
+    if (show) {
+      c.style.opacity = '0';
+      c.style.transform = 'translateY(20px) scale(0.97)';
+      requestAnimationFrame(function() {
+        c.style.transition = 'all .45s cubic-bezier(.22,1,.36,1)';
+        c.style.opacity = '1';
+        c.style.transform = 'translateY(0) scale(1)';
+      });
+    }
+  });
+}
+document.querySelector('.fbtn.act').style.borderColor = 'rgba(227,6,19,0.4)';
+document.querySelector('.fbtn.act').style.color = '#E30613';
+document.querySelector('.fbtn.act').style.background = 'rgba(227,6,19,0.08)';
+
+// ===== MODAL =====
+function openModal(p) {
+  document.getElementById('m-title').textContent = p.title;
+  document.getElementById('m-desc').textContent = p.desc;
+  document.getElementById('m-tags').innerHTML = p.tags.map(function(t) { return '<span class="text-[10px] bg-[#E30613]/10 text-[#f87171] border border-[#E30613]/15 px-2.5 py-1 rounded-full font-medium">' + t + '</span>'; }).join('');
+  document.getElementById('m-bullets').innerHTML = p.bullets.map(function(b) { return '<div class="flex items-start gap-2.5"><iconify-icon icon="lucide:check" width="15" class="text-[#E30613] mt-0.5 flex-shrink-0"></iconify-icon><span class="text-[13px] text-gray-400 font-light">' + b + '</span></div>'; }).join('');
+  var m = document.getElementById('modal');
+  m.classList.remove('hidden'); m.classList.add('flex');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  var m = document.getElementById('modal');
+  m.classList.add('hidden'); m.classList.remove('flex');
+  document.body.style.overflow = '';
+}
+document.getElementById('modal').addEventListener('click', function(e) { if (e.target === e.currentTarget) closeModal(); });
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+
+// ===== TOAST (FIXED) =====
+function showToast(message, type) {
+  type = type || 'success';
+  var container = document.getElementById('toasts');
+  var toast = document.createElement('div');
+  toast.className = 'toast-item glass rounded-xl px-5 py-4 t-in';
+  var iconName = type === 'success' ? 'lucide:check-circle' : 'lucide:alert-circle';
+  var iconColor = type === 'success' ? '#E30613' : '#f59e0b';
+  toast.innerHTML = '<div class="flex items-start gap-3"><iconify-icon icon="' + iconName + '" width="20" style="color:' + iconColor + ';flex-shrink:0;margin-top:1px"></iconify-icon><div><div class="text-sm text-gray-200 font-light">' + message + '</div></div></div>';
+  container.appendChild(toast);
+  setTimeout(function() {
+    toast.classList.remove('t-in');
+    toast.classList.add('t-out');
+    setTimeout(function() { toast.remove(); }, 300);
+  }, 4000);
+}
+
+// ===== CONTACT FORM (COMPLETELY FIXED) =====
+function handleFormSubmit() {
+  var name = document.getElementById('f-name').value.trim();
+  var email = document.getElementById('f-email').value.trim();
+  var subject = document.getElementById('f-subject').value.trim();
+  var message = document.getElementById('f-message').value.trim();
+  var errorDiv = document.getElementById('form-error');
+  var btn = document.getElementById('submit-btn');
+  var btnText = document.getElementById('btn-text');
+  var btnIcon = document.getElementById('btn-icon');
+
+  // Hide previous errors
+  errorDiv.classList.add('hidden');
+  errorDiv.textContent = '';
+
+  // Validation
+  if (!name || !email || !subject || !message) {
+    errorDiv.textContent = 'Please fill in all required fields.';
+    errorDiv.classList.remove('hidden');
+    errorDiv.scrollIntoView({behavior:'smooth', block:'nearest'});
+    return;
+  }
+
+  // Email format check
+  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    errorDiv.textContent = 'Please enter a valid email address.';
+    errorDiv.classList.remove('hidden');
+    return;
+  }
+
+  // Show loading state
+  btn.disabled = true;
+  btnText.textContent = 'Opening Email...';
+  btnIcon.setAttribute('icon', 'lucide:loader-2');
+  btnIcon.style.animation = 'spin .8s linear infinite';
+
+  // Construct mailto link
+  var fullSubject = '[Portfolio] ' + subject;
+  var fullBody = 'Hi Vaishnavi,\n\n' + message + '\n\n---\nSent from portfolio contact form\nName: ' + name + '\nEmail: ' + email;
+  var mailtoLink = 'mailto:vaishnavikharya7@gmail.com?subject=' + encodeURIComponent(fullSubject) + '&body=' + encodeURIComponent(fullBody);
+
+  // Open email client after a small delay for UX
+  setTimeout(function() {
+    window.location.href = mailtoLink;
+
+    // Reset button
+    btn.disabled = false;
+    btnText.textContent = 'Send Message';
+    btnIcon.setAttribute('icon', 'lucide:send');
+    btnIcon.style.animation = '';
+
+    // Show success toast
+    showToast('Email client opened! Send the pre-filled email to connect.', 'success');
+
+    // Clear form
+    document.getElementById('f-name').value = '';
+    document.getElementById('f-email').value = '';
+    document.getElementById('f-subject').value = '';
+    document.getElementById('f-message').value = '';
+  }, 600);
+}
+
+// Allow Enter key to submit from any input in the form
+document.getElementById('cform').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
+    e.preventDefault();
+    handleFormSubmit();
+  }
+});
+
+// ===== INTERSECTION OBSERVER =====
+var obs = new IntersectionObserver(function(entries) {
+  entries.forEach(function(e) {
+    if (e.isIntersecting) {
+      e.target.classList.add('vis');
+      var ctr = e.target.querySelector('.ctr');
+      if (ctr && !ctr.dataset.done) { ctr.dataset.done = '1'; animCtr(ctr); }
+      if (e.target.classList.contains('skill-ring-card')) {
+        var pct = parseInt(e.target.dataset.pct);
+        var circle = e.target.querySelector('.progress');
+        var offset = 251 - (251 * pct / 100);
+        setTimeout(function() { circle.style.strokeDashoffset = offset; }, 200);
+      }
+    }
+  });
+}, {threshold:0.12, rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fu').forEach(function(el) { obs.observe(el); });
+
+// ===== COUNTER =====
+function animCtr(el) {
+  var target = parseInt(el.dataset.t);
+  var dur = 1400;
+  var start = performance.now();
+  function tick(now) {
+    var p = Math.min((now - start) / dur, 1);
+    var ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * ease) + '+';
+    if (p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+// ===== TILT =====
+document.querySelectorAll('.pcard').forEach(function(card) {
+  card.addEventListener('mousemove', function(e) {
+    var r = card.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width - 0.5;
+    var y = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transform = 'translateY(-6px) perspective(800px) rotateX(' + (-y*4) + 'deg) rotateY(' + (x*4) + 'deg)';
+  });
+  card.addEventListener('mouseleave', function() {
+    card.style.transform = '';
+  });
+});
+</script>
+</body>
+</html> 
